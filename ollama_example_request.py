@@ -9,9 +9,10 @@ headers = {
     "X-API-Key": API_KEY
 }
 data = {
-    "model": "mistral",
-    "prompt": "Tell me a joke"
+    "model": "llama3.2"
 }
+
+data["prompt"] = input("prompt:")
 
 response = requests.post(url, json=data, headers=headers)
 

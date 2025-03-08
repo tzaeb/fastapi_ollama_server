@@ -6,7 +6,7 @@ import os
 
 app = FastAPI()
 
-API_KEY = os.environ.get("API_KEY_OLLAMA_HTTP_SERVER") 
+API_KEY = os.environ.get("API_KEY_OLLAMA_HTTP_SERVER")
 API_KEY_NAME = "X-API-Key"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
 
@@ -22,18 +22,24 @@ class PromptRequest(BaseModel):
 def generate_text(request: PromptRequest, api_key: str = Depends(verify_api_key)):
     try:
         # Check if the model is valid by running `ollama list` and parsing the output
-        available_models = subprocess.run(["ollama", "list"], capture_output=True, text=True)
+        available_models = subprocess.run(
+            ["ollama", "list"],
+            capture_output=True,
+            text=True,
+            encoding="utf-8"  # Explicitly set UTF-8 encoding
+        )
         if available_models.returncode != 0:
             raise HTTPException(status_code=500, detail="Failed to retrieve available models")
-        
+
         model_list = [line.split()[0].replace(":latest", "") for line in available_models.stdout.splitlines() if line]
         if request.model not in model_list:
             raise HTTPException(status_code=400, detail=f"Model '{request.model}' is not supported. Available models: {', '.join(model_list)}")
-        
+
         result = subprocess.run(
             ["ollama", "run", request.model, request.prompt],
             capture_output=True,
-            text=True
+            text=True,
+            encoding="utf-8"  # Explicitly set UTF-8 encoding
         )
         if result.returncode != 0:
             raise HTTPException(status_code=500, detail=result.stderr)
