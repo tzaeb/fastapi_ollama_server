@@ -50,7 +50,3 @@ def generate_text(request: PromptRequest, api_key: str = Depends(verify_api_key)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-# Example request with API Key
-# Run the server and send a request using curl:
-# curl -X POST "http://localhost:8000/generate" -H "Content-Type: application/json" -H "X-API-Key: your_secure_api_key" -d '{"model": "mistral", "prompt": "Tell me a joke"}'
