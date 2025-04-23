@@ -7,15 +7,15 @@ url = "http://localhost:8000/generate"
 headers = {"Content-Type": "application/json", "X-API-Key": API_KEY}
 
 
-# Example with generation options
+# Uncomment and modify the following lines if you want to include specific parameters in the request
 data = {
-    "model": "gemma3:1b",
-    "prompt": "",  # Will be filled by user input
-    "options": {
-        "temperature": 0.7,  # Controls randomness (0.0 to 2.0)
-        "top_p": 0.9,  # Nucleus sampling parameter (0.0 to 1.0)
-        "stop": ["\n\n"],  # Stop sequences
-    },
+    # "model": "gemma3:12b",
+    # "options": {
+    #     "temperature": 0.7,  # Controls randomness (0.0 to 2.0)
+    #     "top_p": 0.9,  # Nucleus sampling parameter (0.0 to 1.0)
+    #     "stop": ["\n\n"],  # Stop sequences
+    # },
+    # "format": "json",  # Optional format parameter
 }
 
 data["prompt"] = input("prompt: ")

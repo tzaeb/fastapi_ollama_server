@@ -53,8 +53,8 @@ Generates text based on the provided model, prompt, and optional generation para
 ```
 
 **Parameters:**
-- `model` (required): Name of the Ollama model to use
 - `prompt` (required): The input text prompt
+- `model` (optional): Name of the Ollama model to use
 - `options` (optional): Dictionary containing generation parameters:
   - `temperature` (optional, 0.0-2.0): Controls randomness in generation
   - `num_predict` (optional, >0): Maximum number of tokens to generate

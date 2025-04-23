@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel, Field
@@ -17,11 +18,16 @@ def verify_api_key(api_key: str = Depends(api_key_header)):
 
 
 class PromptRequest(BaseModel):
-    model: str
     prompt: str
-    # 'options' can hold advanced generation parameters like temperature, top_k, etc.
-    # Provide an empty dict by default so it's always present but optional.
-    options: dict = Field(default_factory=dict)
+    options: dict = Field(
+        default_factory=lambda: {
+            "temperature": 0.7,
+            "top_p": 0.9,
+            "stop": ["\n\n"],
+        }
+    )
+    model: Optional[str] = "gemma3:1b"
+    format: Optional[str] = None
 
 
 @app.post("/generate")
@@ -52,6 +58,7 @@ def generate_text(request: PromptRequest, api_key: str = Depends(verify_api_key)
             model=request.model,
             prompt=request.prompt,
             options=request.options,
+            format=request.format,
         )
         return {"response": response["response"]}
     except Exception as e:
